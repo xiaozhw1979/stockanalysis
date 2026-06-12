@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>兴业银行（601166.SH）深度研究报告</title>
+<style>
+  :root {
+    --bg: #0d1320;
+    --card: #141d2e;
+    --accent: #2f7bd9;
+    --accent2: #f2a33c;
+    --green: #2ecc8f;
+    --red: #ff5d6c;
+    --blue: #5b8def;
+    --purple: #8b6dff;
+    --gold: #d9b35c;
+    --text: #e8ecf3;
+    --muted: #92a0b8;
+    --border: #25324a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text);
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif; line-height: 1.75; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 20px 60px; }
+
+  header { background: linear-gradient(135deg, #0e1a30 0%, #14253f 55%, #1a2c45 100%);
+    border-bottom: 1px solid var(--border); padding: 44px 0 32px; }
+  .header-inner { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  .tag { display: inline-block; background: rgba(47,123,217,.15); color: var(--blue);
+    border: 1px solid rgba(47,123,217,.45); border-radius: 20px; padding: 2px 14px;
+    font-size: 13px; margin-bottom: 14px; margin-right: 8px; }
+  .tag.gold { color: var(--gold); border-color: rgba(217,179,92,.45); background: rgba(217,179,92,.12); }
+  h1 { font-size: 32px; font-weight: 700; letter-spacing: 1px; }
+  h1 .ticker { color: var(--muted); font-size: 19px; font-weight: 400; margin-left: 10px; }
+  .subtitle { color: var(--muted); margin-top: 8px; font-size: 14px; }
+  .price-bar { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
+  .price-item { background: rgba(255,255,255,.05); border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px 20px; min-width: 138px; }
+  .price-item .label { font-size: 12px; color: var(--muted); }
+  .price-item .value { font-size: 21px; font-weight: 700; margin-top: 2px; }
+  .up { color: var(--green); } .down { color: var(--red); }
+
+  nav { position: sticky; top: 0; z-index: 50; background: rgba(13,19,32,.93);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  nav .nav-inner { max-width: 1120px; margin: 0 auto; padding: 0 20px; display: flex; gap: 2px; overflow-x: auto; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; padding: 12px 10px;
+    white-space: nowrap; border-bottom: 2px solid transparent; }
+  nav a:hover { color: var(--text); border-bottom-color: var(--accent); }
+
+  section { margin-top: 52px; scroll-margin-top: 60px; }
+  h2 { font-size: 22px; padding-left: 14px; border-left: 4px solid var(--accent); margin-bottom: 20px; }
+  h3 { font-size: 16px; color: var(--accent2); margin: 20px 0 8px; }
+  h4 { font-size: 14px; color: var(--blue); margin: 14px 0 6px; }
+  p { color: #c6cfdc; margin-bottom: 10px; font-size: 15px; }
+  ul.plain { padding-left: 22px; color: #c6cfdc; font-size: 14.5px; margin-bottom: 10px; }
+  ul.plain li { margin-bottom: 6px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 24px 28px; margin-bottom: 18px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 820px) { .grid2, .grid3, .grid4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 540px) { .grid2, .grid3, .grid4 { grid-template-columns: 1fr; } }
+
+  .metric { background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 12px; text-align: center; }
+  .metric .num { font-size: 23px; font-weight: 700; color: var(--accent2); }
+  .metric .num small { font-size: 13px; font-weight: 400; }
+  .metric .desc { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+
+  .chart { margin-top: 14px; }
+  .bar-row { display: flex; align-items: center; margin-bottom: 11px; }
+  .bar-label { width: 92px; font-size: 13px; color: var(--muted); flex-shrink: 0; }
+  .bar-track { flex: 1; background: rgba(255,255,255,.06); border-radius: 6px; height: 24px; position: relative; }
+  .bar-fill { height: 100%; border-radius: 6px; position: relative;
+    background: linear-gradient(90deg, #1f5aa8, var(--blue)); }
+  .bar-fill.alt { background: linear-gradient(90deg, #b97a23, var(--accent2)); }
+  .bar-fill.green { background: linear-gradient(90deg, #1d9e6e, var(--green)); }
+  .bar-fill.red { background: linear-gradient(90deg, #c2404e, var(--red)); }
+  .bar-fill.purple { background: linear-gradient(90deg, #6247c9, var(--purple)); }
+  .bar-value { position: absolute; right: -8px; transform: translateX(100%); top: 50%;
+    margin-top: -10px; font-size: 12.5px; color: var(--text); white-space: nowrap; }
+
+  .donut-wrap { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; }
+  .donut { width: 180px; height: 180px; border-radius: 50%; position: relative; flex-shrink: 0; }
+  .donut::after { content: ""; position: absolute; inset: 22%; border-radius: 50%; background: var(--card); }
+  .donut .center-text { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; z-index: 1; font-size: 12px; color: var(--muted); }
+  .center-text b { font-size: 19px; color: var(--text); }
+  .legend { flex: 1; min-width: 200px; }
+  .legend-item { display: flex; align-items: center; font-size: 13.5px; margin-bottom: 7px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; margin-right: 10px; flex-shrink: 0; }
+  .legend-item .pct { margin-left: auto; color: var(--muted); }
+
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 10px; }
+  th, td { padding: 9px 12px; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; white-space: normal; }
+  th { color: var(--muted); font-weight: 500; background: rgba(255,255,255,.03); }
+  tr.hl td { background: rgba(47,123,217,.10); font-weight: 600; }
+  td.wrap, th.wrap { white-space: normal; text-align: left; }
+
+  .swot { border-radius: 14px; padding: 18px 22px; border: 1px solid var(--border); }
+  .swot h3 { margin-top: 0; }
+  .swot ul { padding-left: 20px; font-size: 13.5px; color: #c6cfdc; }
+  .swot li { margin-bottom: 6px; }
+  .swot.s { background: rgba(46,204,143,.08); } .swot.s h3 { color: var(--green); }
+  .swot.w { background: rgba(255,93,108,.08); } .swot.w h3 { color: var(--red); }
+  .swot.o { background: rgba(242,163,60,.08); } .swot.o h3 { color: var(--accent2); }
+  .swot.t { background: rgba(139,109,255,.08); } .swot.t h3 { color: var(--purple); }
+  .callout { border-left: 3px solid var(--accent2); background: rgba(242,163,60,.07);
+    border-radius: 0 10px 10px 0; padding: 12px 18px; margin: 14px 0; font-size: 14px; color: #d8dee9; }
+  .callout.red { border-left-color: var(--red); background: rgba(255,93,108,.07); }
+  .callout.green { border-left-color: var(--green); background: rgba(46,204,143,.07); }
+  .callout.blue { border-left-color: var(--blue); background: rgba(91,141,239,.07); }
+
+  .risk-high { color: var(--red); font-weight: 600; }
+  .risk-mid { color: var(--accent2); font-weight: 600; }
+  .risk-low { color: var(--green); font-weight: 600; }
+
+  .svg-chart { width: 100%; margin-top: 10px; }
+  .svg-chart text { fill: var(--muted); font-size: 11px; }
+
+  .timeline { border-left: 2px solid var(--border); margin-left: 8px; padding-left: 22px; }
+  .timeline .titem { position: relative; margin-bottom: 14px; font-size: 14px; color: #c6cfdc; }
+  .timeline .titem::before { content: ""; position: absolute; left: -28px; top: 7px; width: 10px; height: 10px;
+    border-radius: 50%; background: var(--accent); }
+  .timeline .titem b { color: var(--text); }
+
+  .footnote { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+  .disclaimer { margin-top: 50px; padding: 18px 22px; border: 1px dashed var(--border);
+    border-radius: 12px; font-size: 13px; color: var(--muted); }
+  .disclaimer a { color: var(--blue); }
+  footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 36px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <span class="tag">A股 · 银行 · 股份制商业银行</span>
+    <span class="tag gold">高股息 / 深度价值</span>
+    <span class="tag" style="color:var(--green);border-color:rgba(46,204,143,.4);background:rgba(46,204,143,.12)">深度研究</span>
+    <h1>兴业银行 <span class="ticker">601166.SH · INDUSTRIAL BANK</span></h1>
+    <div class="subtitle">深度研究报告 · 报告日期 2026-06-12（今日为 2025 年度末期股息除权除息日）· 基于 2025 年报与 2026 年一季报</div>
+    <div class="price-bar">
+      <div class="price-item"><div class="label">近期股价（2026 年 5 月下旬）</div><div class="value">~17.4 <small>元</small></div></div>
+      <div class="price-item"><div class="label">总市值（约）</div><div class="value">3,670 <small>亿元</small></div></div>
+      <div class="price-item"><div class="label">52 周区间（约）</div><div class="value" style="font-size:17px">17.3 – 25.5</div></div>
+      <div class="price-item"><div class="label">PB（2025 年末，约）</div><div class="value">0.45x</div></div>
+      <div class="price-item"><div class="label">PE（TTM，约）</div><div class="value">4.8x</div></div>
+      <div class="price-item"><div class="label">股息率（2025 年度，约）</div><div class="value up">6.1%</div></div>
+    </div>
+  </div>
+</header>
+
+<nav><div class="nav-inner">
+  <a href="#s1">投资摘要</a><a href="#s2">公司概况</a><a href="#s3">行业环境</a>
+  <a href="#s4">经营分析</a><a href="#s5">资产质量</a><a href="#s6">转债专题</a>
+  <a href="#s7">分红回报</a><a href="#s8">同业对比</a><a href="#s9">估值分析</a>
+  <a href="#s10">风险因素</a><a href="#s11">投资结论</a>
+</div></nav>
+
+<div class="container">
+
+  <!-- ============ 一、投资摘要 ============ -->
+  <section id="s1">
+    <h2>一、投资摘要</h2>
+    <div class="card">
+      <h3 style="margin-top:0">核心观点</h3>
+      <ul class="plain">
+        <li><b>典型的「低估值 + 高股息 + 弱成长」深度价值标的。</b>2025 年营收 2,127.4 亿元（+0.24%）、归母净利润 774.7 亿元（+0.34%），连续第三年在 770 亿元平台横盘；但当前约 0.45 倍 PB、4.8 倍 PE、6% 以上股息率，价格已计入相当悲观的预期。这是一只「赚估值和股息的钱，而非赚成长的钱」的股票。</li>
+        <li><b>利润表的真实压力大于表观增速。</b>净息差从 2024 年的 1.82% 进一步收窄至 1.71%，2026Q1 营收转负（-1.06%）；净利润微增主要依靠拨备覆盖率下调 10 个百分点（238%→228%）释放利润，<b>以拨备「余粮」换利润正增长的模式不可长期持续</b>。</li>
+        <li><b>资产质量稳定但无亮点。</b>不良率 1.08% 在股份行中处于第二梯队（优于中信 1.15%，逊于招行 0.94%、平安 1.05%），房地产与信用卡两大历史风险点边际收敛，三季报后机构普遍以「风险收敛」定调。</li>
+        <li><b>兴业转债是 2026–2027 年最大的公司特有变量。</b>500 亿元转债仅转股 86.5 亿元，413.5 亿元将于 2027 年 12 月到期；转股价 20.63 元较现价高约 19%，强赎线 26.82 元更需上涨 54%。若无法促转股，到期兑付虽不直接侵蚀资本，但意味着错失核心一级资本补充（当前核心一级资本充足率 9.75%），管理层存在「市值诉求」。</li>
+        <li><b>分红是最确定的逻辑主线。</b>2025 年度每股合计派息 1.066 元（中期 0.565 + 末期 0.501），合计约 225.6 亿元，分红率约 30%、连续 16 年提升；以现价计股息率约 6.1%，相对 10 年期国债收益率的利差处于历史高位区间。</li>
+      </ul>
+      <h3>关键数据速览（2021–2026Q1）</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>指标</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2026Q1</th></tr>
+        <tr><td>营业收入（亿元）</td><td>2,212.4</td><td>2,223.7</td><td>2,108.3</td><td>2,122.3</td><td>2,127.4</td><td>550.9</td></tr>
+        <tr><td>营收同比</td><td>+8.9%</td><td>+0.5%</td><td class="down">-5.2%</td><td>+0.7%</td><td>+0.24%</td><td class="down">-1.06%</td></tr>
+        <tr><td>归母净利润（亿元）</td><td>826.8</td><td>913.8</td><td>771.2</td><td>772.1</td><td>774.7</td><td>238.3</td></tr>
+        <tr><td>净利润同比</td><td>+24.1%</td><td>+10.5%</td><td class="down">-15.6%</td><td>+0.12%</td><td>+0.34%</td><td>+0.15%</td></tr>
+        <tr><td>净息差</td><td>2.29%</td><td>2.10%</td><td>1.93%</td><td>1.82%</td><td class="down">1.71%</td><td>未披露</td></tr>
+        <tr><td>不良贷款率</td><td>1.10%</td><td>1.09%</td><td>1.07%</td><td>1.07%</td><td>1.08%</td><td>1.08%</td></tr>
+        <tr><td>拨备覆盖率</td><td>268.7%</td><td>236.4%</td><td>245.2%</td><td>237.8%</td><td class="down">228.4%</td><td>—</td></tr>
+        <tr><td>总资产（万亿元）</td><td>8.60</td><td>9.27</td><td>10.16</td><td>10.51</td><td>~11.09</td><td>11.28</td></tr>
+      </table></div>
+      <p class="footnote">注：2021–2024 年数据来自历年年报；2025 年来自年度报告摘要；2025 年末总资产按 2026Q1 较上年末 +1.70% 反推。净息差与拨备序列中个别年份为公开报道口径，可能与年报精确值有±0.x 差异。</p>
+    </div>
+  </section>
+
+  <!-- ============ 二、公司概况 ============ -->
+  <section id="s2">
+    <h2>二、公司概况：从「同业之王」到「商行 + 投行」</h2>
+    <div class="card">
+      <p>兴业银行 1988 年成立于福州，2007 年上交所上市，第一大股东为福建省财政厅，是国内系统重要性银行之一，总资产超 11 万亿元、规模居股份制银行第二（仅次于招行）。它在中国银行业里是一家「路径特色」极强的银行：</p>
+      <div class="timeline" style="margin-top:16px">
+        <div class="titem"><b>2005–2016「同业之王」时代：</b>以银银平台和同业资产负债扩张实现弯道超车，规模快速跻身股份行头部；同时埋下对市场利率敏感、负债成本偏高的基因。</div>
+        <div class="titem"><b>2017–2020 压降同业、回归本源：</b>在金融去杠杆监管下大幅压缩同业与非标，资产负债表重构，确立「商行 + 投行」战略——以银行牌照为根，向债券承销、并购融资、资产流转等投行化业务要收入。</div>
+        <div class="titem"><b>2021 至今「三张名片」：</b>绿色银行（国内首家赤道银行，2008 年即采纳赤道原则，绿色金融为全行最强标签）、财富银行（理财子兴银理财规模居前）、投资银行（债券承销常年市场前列），并布局五大新赛道（普惠、科创、能源、汽车、园区金融）。</div>
+        <div class="titem"><b>2023–2025 利润平台期：</b>2023 年净利润 -15.6% 大幅出清（理财老产品整改、地产拨备），此后连续三年净利润停留在 770 亿元平台，进入「以时间换空间」阶段。</div>
+      </div>
+      <h3>资产负债表概貌（2025 年末 / 2026Q1）</h3>
+      <div class="grid4">
+        <div class="metric"><div class="num">11.28<small> 万亿</small></div><div class="desc">总资产（2026Q1，较年初 +1.70%）</div></div>
+        <div class="metric"><div class="num">9.75%</div><div class="desc">核心一级资本充足率（2025 年末）</div></div>
+        <div class="metric"><div class="num">~9.2%</div><div class="desc">加权平均 ROE（2025，测算）</div></div>
+        <div class="metric"><div class="num">~3.66<small> 元</small></div><div class="desc">每股收益（2025，约）<br>每股净资产约 39 元</div></div>
+      </div>
+      <div class="callout blue" style="margin-top:14px"><b>一句话画像：</b>一家负债端先天不如招行（缺乏低成本零售存款护城河）、但资产端运营能力和投行基因突出的批发型银行——这决定了它在息差下行周期里受伤更深，也决定了它在估值上长期折价于招行（0.45x vs 0.97x PB）。</div>
+    </div>
+  </section>
+
+  <!-- ============ 三、行业环境 ============ -->
+  <section id="s3">
+    <h2>三、行业环境：息差磨底、分化加剧的 2026</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin-top:0">行业逆风：银行业的「三重挤压」</h3>
+        <ul class="plain">
+          <li><b>净息差行业性收窄：</b>LPR 多轮下调 + 存量房贷利率调整 + 有效信贷需求不足，资产端收益率持续下行；存款定期化又使负债成本下降偏慢。全行业净息差已降至历史最低区域，这是兴业营收三年零增长的最大宏观背景。</li>
+          <li><b>地方化债与地产风险处置：</b>城投化债压低相关资产收益率；房地产风险虽边际缓和，但拨备消耗仍在持续。</li>
+          <li><b>非息收入波动加大：</b>减费让利压制手续费；以投资收益为主的其他非息高度依赖债市行情，2025 年债市波动使多家银行非息收入承压。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">行业顺风：高股息行情与资金面支撑</h3>
+        <ul class="plain">
+          <li><b>类债资产逻辑：</b>无风险利率下行背景下，险资、被动指数资金持续增配高股息银行股；2025 年银行板块普涨（浦发 +24.6%、中信 +15.1%、兴业 +15.0%、招行 +11.8%）。</li>
+          <li><b>2026 年「告别普涨、拥抱分化」：</b>市场主线从「一篮子买股息」转向甄别个体——息差韧性、资产质量、分红能力的差异将决定个股表现，兴业 2026 年以来跑输板块（5 月下旬创出 52 周新低附近）正是分化的体现。</li>
+          <li><b>政策托底：</b>监管层引导银行维持合理利润与资本补充能力，存款利率市场化下调为负债端减压。</li>
+        </ul>
+        <div class="callout" style="margin-top:10px"><b>定位判断：</b>行业 beta 是「股息率下行（即股价上涨）+ 基本面磨底」，兴业能否享受 beta，取决于息差和营收何时止跌——这正是 2026 年市场对它评级分歧（部分券商「中性」）的核心。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 四、经营分析 ============ -->
+  <section id="s4">
+    <h2>四、经营与盈利能力分析</h2>
+
+    <h3>4.1 收入结构：利息与非息「双弱平衡」</h3>
+    <div class="card">
+      <div class="grid2">
+        <div>
+          <h4>2025 年收入结构（亿元）</h4>
+          <div class="donut-wrap">
+            <div class="donut" style="background: conic-gradient(var(--blue) 0 69.9%, var(--accent2) 69.9% 100%);">
+              <div class="center-text"><b>2,127 亿</b>营业收入</div>
+            </div>
+            <div class="legend">
+              <div class="legend-item"><span class="legend-dot" style="background:var(--blue)"></span>利息净收入<span class="pct">1,487.5 亿 / 69.9%</span></div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--accent2)"></span>非利息净收入<span class="pct">639.9 亿 / 30.1%</span></div>
+            </div>
+          </div>
+          <p class="footnote">利息净收入 +0.44%——在息差 -11bp 的年份守住正增长，靠的是规模扩张（以量补价）；非息收入约持平，其中 2026Q1 手续费及佣金净收入 72.28 亿元（+7.45%）是少有的亮点，反映财富管理与投行业务的修复。</p>
+        </div>
+        <div>
+          <h4>营业收入与归母净利润（亿元）</h4>
+          <div class="chart">
+            <div class="bar-row"><div class="bar-label">2021 营收</div><div class="bar-track"><div class="bar-fill" style="width:84%"><span class="bar-value">2,212</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2023 营收</div><div class="bar-track"><div class="bar-fill" style="width:80%"><span class="bar-value">2,108</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2025 营收</div><div class="bar-track"><div class="bar-fill" style="width:81%"><span class="bar-value">2,127</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2021 净利</div><div class="bar-track"><div class="bar-fill alt" style="width:31%"><span class="bar-value">827</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2023 净利</div><div class="bar-track"><div class="bar-fill alt" style="width:29%"><span class="bar-value">771</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2025 净利</div><div class="bar-track"><div class="bar-fill alt" style="width:29.2%"><span class="bar-value">775</span></div></div></div>
+          </div>
+          <div class="callout red" style="margin-top:8px"><b>本质：</b>2021→2025，营收原地踏步、净利润下台阶后横盘。这不是经营失败，而是全行业息差周期叠加自身 2023 年风险出清的结果；但「五年不增长」也是 0.45 倍 PB 的全部理由。</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>4.2 净息差：仍未见底，但降幅趋缓</h3>
+    <div class="card">
+      <div class="grid2">
+        <div>
+          <h4>净息差走势（%）</h4>
+          <svg class="svg-chart" viewBox="0 0 480 220">
+            <line x1="40" y1="20" x2="40" y2="180" stroke="#25324a"/>
+            <line x1="40" y1="180" x2="460" y2="180" stroke="#25324a"/>
+            <line x1="40" y1="100" x2="460" y2="100" stroke="#25324a" stroke-dasharray="4 4"/>
+            <text x="12" y="184">1.0</text><text x="12" y="104">2.0</text><text x="12" y="28">3.0</text>
+            <!-- y = 180 - (v-1.0)*80 : 2.29->76.8, 2.10->92, 1.93->105.6, 1.82->114.4, 1.71->123.2 -->
+            <polyline points="80,76.8 170,92 260,105.6 350,114.4 440,123.2" fill="none" stroke="#5b8def" stroke-width="2.5"/>
+            <circle cx="80" cy="76.8" r="3.5" fill="#5b8def"/><circle cx="170" cy="92" r="3.5" fill="#5b8def"/>
+            <circle cx="260" cy="105.6" r="3.5" fill="#5b8def"/><circle cx="350" cy="114.4" r="3.5" fill="#5b8def"/>
+            <circle cx="440" cy="123.2" r="3.5" fill="#5b8def"/>
+            <text x="66" y="66">2.29</text><text x="156" y="82">2.10</text><text x="246" y="96">1.93</text>
+            <text x="336" y="106">1.82</text><text x="426" y="146" fill="#ff5d6c">1.71</text>
+            <text x="68" y="198">2021</text><text x="158" y="198">2022</text><text x="248" y="198">2023</text>
+            <text x="338" y="198">2024</text><text x="428" y="198">2025</text>
+          </svg>
+        </div>
+        <div>
+          <h4>解读</h4>
+          <ul class="plain">
+            <li>五年累计收窄 <b>58bp</b>，2025 年单年 -11bp，降幅好于银行业整体水平，但管理层在业绩说明会上未承诺 2026 年息差企稳，仅表示「力争净利息收入保持正增长」。</li>
+            <li>边际积极因素：存款挂牌利率多轮下调的重定价红利逐步释放；高成本同业负债占比高的结构在利率下行后期反而受益（负债重定价快）。</li>
+            <li>边际消极因素：资产端 LPR 重定价仍在进行；有效信贷需求弱，新发放贷款利率仍在下行。</li>
+            <li><b>关键观察点：</b>2026 年中报息差环比降幅能否收窄至 2–3bp 以内——这是营收增速转正的前提，也是估值修复的扳机。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>4.3 利润质量：拨备反哺的「微增长」</h3>
+    <div class="card">
+      <p>2025 年净利润 +0.34% 的构成需要拆开看：营收仅 +0.24%，而拨备覆盖率全年下降约 10 个百分点（237.8%→228.4%）——意味着利润正增长相当程度上由<b>少提/释放拨备</b>贡献。这种「以丰补歉」是银行业平滑利润的正常操作，且 228% 的拨备仍然厚实（监管底线 120–150%），但它有两层含义：</p>
+      <ul class="plain">
+        <li><b>正面：</b>公司有足够「余粮」在息差磨底期维持利润和分红稳定，等待收入端周期回暖，分红的可持续性短期无忧；</li>
+        <li><b>负面：</b>拨备释放空间按当前节奏仅可支撑数年，若 2027 年前营收仍未恢复正增长，利润将被迫跟随营收下行——<b>市场给 0.45 倍 PB，定价的正是这个尾部情景</b>。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 五、资产质量 ============ -->
+  <section id="s5">
+    <h2>五、资产质量：稳定有余、改善不足</h2>
+    <div class="card">
+      <div class="grid2">
+        <div>
+          <h4>不良贷款率（%）</h4>
+          <div class="chart">
+            <div class="bar-row"><div class="bar-label">2021</div><div class="bar-track"><div class="bar-fill green" style="width:55%"><span class="bar-value">1.10</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2022</div><div class="bar-track"><div class="bar-fill green" style="width:54.5%"><span class="bar-value">1.09</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2023</div><div class="bar-track"><div class="bar-fill green" style="width:53.5%"><span class="bar-value">1.07</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2024</div><div class="bar-track"><div class="bar-fill green" style="width:53.5%"><span class="bar-value">1.07</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2025</div><div class="bar-track"><div class="bar-fill green" style="width:54%"><span class="bar-value">1.08</span></div></div></div>
+          </div>
+        </div>
+        <div>
+          <h4>拨备覆盖率（%）</h4>
+          <div class="chart">
+            <div class="bar-row"><div class="bar-label">2021</div><div class="bar-track"><div class="bar-fill purple" style="width:80%"><span class="bar-value">268.7</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2022</div><div class="bar-track"><div class="bar-fill purple" style="width:70%"><span class="bar-value">236.4</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2023</div><div class="bar-track"><div class="bar-fill purple" style="width:73%"><span class="bar-value">245.2</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2024</div><div class="bar-track"><div class="bar-fill purple" style="width:71%"><span class="bar-value">237.8</span></div></div></div>
+            <div class="bar-row"><div class="bar-label">2025</div><div class="bar-track"><div class="bar-fill purple" style="width:68%"><span class="bar-value">228.4</span></div></div></div>
+          </div>
+        </div>
+      </div>
+      <h3>结构性观察</h3>
+      <ul class="plain">
+        <li><b>不良率五年稳定在 1.07–1.10% 的窄区间</b>，2025 年微升 1bp 至 1.08%、2026Q1 持平，在股份行中居第二梯队（招行 0.94% / 平安 1.05% / 兴业 1.08% / 中信 1.15%）。</li>
+        <li><b>两大历史风险点边际收敛：</b>对公房地产风险经 2022–2024 年集中暴露和拨备计提后生成放缓；信用卡不良在零售风险行业性抬升中也趋于稳定。第一财经对其三季报的定调即为「风险收敛，百亿分红在路上」。</li>
+        <li><b>但「稳定」不等于「改善」：</b>拨备覆盖率下行与不良率微升同向出现，说明拨备计提力度的下降快于风险改善的速度；零售贷款（按揭、消费贷）质量仍受居民收入预期影响，需观察后续不良生成率（公司口径）变化。</li>
+        <li><b>化债影响中性偏正面：</b>地方政府相关敞口在置换后信用风险下降，但收益率同步下降，体现为「资产质量改善、息差受损」的交换。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 六、转债专题 ============ -->
+  <section id="s6">
+    <h2>六、专题：兴业转债——悬在资本与股价之间的 413 亿</h2>
+    <div class="card">
+      <div class="grid4">
+        <div class="metric"><div class="num">500<small> 亿元</small></div><div class="desc">兴业转债（113052）发行总额（2021 年末发行）</div></div>
+        <div class="metric"><div class="num">413.5<small> 亿元</small></div><div class="desc">尚未转股余额（截至 2026Q1，累计仅转股 86.5 亿）</div></div>
+        <div class="metric"><div class="num">20.63<small> 元</small></div><div class="desc">当前转股价（现价较其低约 16%）</div></div>
+        <div class="metric"><div class="num">2027.12.27</div><div class="desc">到期日（剩余约 1 年半）</div></div>
+      </div>
+      <h3>三种结局的推演</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th class="wrap">情景</th><th class="wrap">触发条件</th><th class="wrap">对公司影响</th><th class="wrap">对股东影响</th><th>可能性评估</th></tr>
+        <tr><td class="wrap">① 强赎促转股</td><td class="wrap">股价持续高于 26.82 元（较现价 +54%）</td><td class="wrap">最优解：413 亿全部转为核心一级资本，充足率大幅改善</td><td class="wrap">股本摊薄约 9%，但通常伴随股价大涨，整体正面</td><td class="risk-high">低（涨幅要求过高）</td></tr>
+        <tr class="hl"><td class="wrap">② 股价站上转股价上方，自然转股</td><td class="wrap">股价明显高于 20.63 元并保持，持有人有转股动力</td><td class="wrap">部分补充资本；管理层有动力通过分红、业绩、市值管理推动</td><td class="wrap">温和摊薄 + 股价上行，正面</td><td class="risk-mid">中（需股价 +20% 以上）</td></tr>
+        <tr><td class="wrap">③ 到期兑付</td><td class="wrap">股价持续低于转股价</td><td class="wrap">需现金兑付本息约 430 亿元；不直接扣减资本，但错失核心一级补充，9.75% 的充足率约束未来扩表与分红提升空间</td><td class="wrap">无摊薄，但隐含「股价两年内未涨 20%」的弱市确认</td><td class="risk-mid">中高（按当前价格路径）</td></tr>
+      </table></div>
+      <div class="callout" style="margin-top:12px"><b>投资含义：</b>转债是观察管理层「市值诉求」的窗口——2026–2027 年公司有真实动机维护股价（提高分红率、加强投资者沟通均是手段，2025 年分红率提至约 30% 可部分由此解释）。对股东而言，这构成一个温和的「下有诉求托底、上有转股价锚点（20.63 元）」的博弈结构。同时需注意：实施权益分派期间转债停止转股等技术性安排会阶段性影响转股节奏。</div>
+    </div>
+  </section>
+
+  <!-- ============ 七、分红回报 ============ -->
+  <section id="s7">
+    <h2>七、分红与股东回报：本报告最确定的部分</h2>
+    <div class="card">
+      <div class="grid4">
+        <div class="metric"><div class="num">1.066<small> 元/股</small></div><div class="desc">2025 年度合计派息<br>（中期 0.565 + 末期 0.501）</div></div>
+        <div class="metric"><div class="num">225.6<small> 亿元</small></div><div class="desc">全年分红总额<br>（末期 106 亿今日除息）</div></div>
+        <div class="metric"><div class="num">~30%</div><div class="desc">分红率（公司口径约 31%）<br>连续 16 年提升</div></div>
+        <div class="metric"><div class="num">~6.1%</div><div class="desc">股息率（按 17.4 元测算）<br>显著高于 10 年期国债</div></div>
+      </div>
+      <h3>三个判断</h3>
+      <ul class="plain">
+        <li><b>可持续性：</b>分红消耗 225.6 亿 vs 净利润 774.7 亿 + 拨备余粮 + 核心一级 9.75%（高于监管要求），即便利润零增长，30% 分红率也可维持多年；公司已建立中期 + 末期一年两次分红机制。</li>
+        <li><b>提升空间：</b>相比国有大行普遍 30% 和招行 35% 的分红率，兴业约 30% 刚到达第一梯队门槛；在转债转股诉求下，分红率进一步上行（如 32–35%）是合理推演，每提升 1 个百分点对应股息率增厚约 0.2 个百分点。</li>
+        <li><b>定价含义：</b>6.1% 股息率隐含市场要求的风险补偿极高。历史经验上，优质银行股息率向 4.5–5% 收敛是常态——仅此一项对应 22–28% 的股价上行空间，这是「股息率锚」估值法的核心逻辑（详见第九章）。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 八、同业对比 ============ -->
+  <section id="s8">
+    <h2>八、股份制银行同业对比</h2>
+    <div class="card">
+      <div class="tbl-wrap"><table>
+        <tr><th class="wrap">银行</th><th>不良率（2025）</th><th>PB（约）</th><th>2025 年股价涨幅</th><th class="wrap">画像与相对兴业的差异</th></tr>
+        <tr><td class="wrap">招商银行</td><td class="up">0.94%</td><td>0.97x</td><td>+11.8%</td><td class="wrap">零售之王：低成本存款 + 财富管理护城河，资产质量断层领先，享受估值溢价；增长同样乏力但确定性最高</td></tr>
+        <tr class="hl"><td class="wrap">兴业银行</td><td>1.08%</td><td>0.45x</td><td>+15.0%</td><td class="wrap">批发金融 + 绿色/投行特色；规模股份行第二；估值与股息率最具吸引力，但负债端与零售短板决定折价</td></tr>
+        <tr><td class="wrap">中信银行</td><td>1.15%</td><td>~0.55x</td><td>+15.1%</td><td class="wrap">对公传统强行，背靠中信集团协同；资产质量略逊于兴业</td></tr>
+        <tr><td class="wrap">平安银行</td><td>1.05%</td><td>~0.5x</td><td>—</td><td class="wrap">零售转型受阻、压降高收益高风险资产，营收降幅大于兴业，处于更深的调整期</td></tr>
+        <tr><td class="wrap">浦发银行</td><td>—</td><td>~0.5x</td><td class="up">+24.6%</td><td class="wrap">2025 年困境反转标的（低基数 + 利润修复弹性），领涨股份行，说明市场愿意为「边际改善」付费</td></tr>
+      </table></div>
+      <p class="footnote">注：PB 为近似值（兴业按 2025 年末每股净资产约 39 元与 17.4 元股价测算；他行为公开报道与研报区间口径），仅用于量级比较。</p>
+      <h3>对比结论</h3>
+      <ul class="plain">
+        <li><b>兴业的估值排序低于其基本面排序。</b>不良率、规模、ROE 均居股份行第二梯队偏上，但 PB 几乎垫底——折价主要来自「营收连续三年零增长 + 息差未企稳 + 转债悬置」三重压制，而非资产质量恶化。</li>
+        <li><b>浦发 2025 年的行情是一面镜子：</b>市场在低估值银行中奖励的是「拐点信号」而非「绝对便宜」。兴业要复制这种修复，需要给出营收转正或息差企稳的实证，这比再便宜 10% 更重要。</li>
+        <li><b>与招行的差距是结构性的</b>（负债成本与零售客群），不应期待估值收敛到招行水平；合理的对标区间是中信/浦发的 0.5–0.55 倍 PB。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 九、估值分析 ============ -->
+  <section id="s9">
+    <h2>九、估值分析与情景推演</h2>
+    <div class="card">
+      <h3 style="margin-top:0">9.1 三种估值视角交叉验证</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th class="wrap">方法</th><th class="wrap">核心假设</th><th>隐含合理价</th><th class="wrap">说明</th></tr>
+        <tr><td class="wrap">PB-ROE 框架</td><td class="wrap">ROE 约 9.2%、永续增长 3%、股权成本 11–12% → 合理 PB 约 0.50–0.55x</td><td><b>19.5 – 21.5 元</b></td><td class="wrap">当前 0.45x 低于模型合理区间下沿</td></tr>
+        <tr><td class="wrap">股息率锚</td><td class="wrap">每股股息 1.066 元，要求股息率回落至 4.8–5.5% 的高股息资产常态区间</td><td><b>19.4 – 22.2 元</b></td><td class="wrap">险资/指数资金定价逻辑，对分红可持续性敏感</td></tr>
+        <tr><td class="wrap">转股价锚</td><td class="wrap">管理层在 2027 年末前有推动股价站上转股价 20.63 元的现实诉求</td><td><b>20.6 元以上</b></td><td class="wrap">博弈性参考，非基本面定价</td></tr>
+      </table></div>
+      <p>三种方法的指向高度一致：<b>合理中枢约 19.5–21.5 元，较现价有 12–24% 空间</b>，且尚未计入持有期股息。</p>
+
+      <h3>9.2 情景分析（12–18 个月）</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>情景</th><th class="wrap">核心假设</th><th>目标 PB（2026E BVPS≈41.5 元）</th><th>目标价</th><th>含股息总回报</th></tr>
+        <tr><td class="risk-low">乐观（~25%）</td><td class="wrap">2026 下半年息差企稳、营收转正，转债转股预期发酵，高股息行情延续</td><td>0.55x</td><td><b>~22.8 元</b></td><td class="up">~+37%</td></tr>
+        <tr class="hl"><td class="risk-mid">中性（~50%）</td><td class="wrap">息差降幅收窄但未转正，利润维持 0±2% 微增，分红率小幅提升</td><td>0.47x</td><td><b>~19.5 元</b></td><td class="up">~+18%</td></tr>
+        <tr><td class="risk-high">悲观（~25%）</td><td class="wrap">息差超预期下行，拨备释放难抵营收下滑，利润转负、分红率停滞</td><td>0.38x</td><td><b>~15.8 元</b></td><td class="down">~-3%</td></tr>
+      </table></div>
+      <p class="footnote">BVPS 2026E ≈ 39.0 + 3.66 − 1.07 ≈ 41.5 元（测算）。概率加权目标价约 19.4 元，含股息期望总回报约 +17%。悲观情景下 6% 股息基本对冲股价下跌，体现高股息的「下行缓冲垫」特征。</p>
+
+      <h3>9.3 历史估值分位</h3>
+      <p>0.45 倍 PB 处于公司上市以来的最低区域（历史区间大致 0.4–1.5 倍，近五年中枢约 0.5–0.6 倍）；4.8 倍 PE 与 6.1% 股息率同样处于历史极值附近。需要诚实指出的是：<b>银行股的「破净」在息差下行期是全行业现象，低分位本身不构成买入理由</b>，它只说明继续大幅杀估值需要新的坏消息（如资产质量恶化），而修复需要的仅是「不再变差」。</p>
+    </div>
+  </section>
+
+  <!-- ============ 十、风险因素 ============ -->
+  <section id="s10">
+    <h2>十、风险因素（按重要性排序）</h2>
+    <div class="card">
+      <div class="tbl-wrap"><table>
+        <tr><th class="wrap">风险</th><th>等级</th><th class="wrap">传导机制</th><th class="wrap">跟踪指标 / 缓释因素</th></tr>
+        <tr><td class="wrap">① 净息差持续超预期下行</td><td class="risk-high">高</td><td class="wrap">LPR 再降息 + 信贷需求不足 → 营收负增长扩大 → 拨备释放也无法维持利润正增长 → 分红与估值逻辑动摇</td><td class="wrap">跟踪：季度息差环比降幅、存款成本下行速度。缓释：负债端重定价快的结构特征</td></tr>
+        <tr><td class="wrap">② 零售资产质量恶化</td><td class="risk-mid">中高</td><td class="wrap">居民收入预期偏弱 → 信用卡/消费贷/按揭不良生成抬升 → 信用成本上行</td><td class="wrap">跟踪：不良生成率、关注类占比、信用卡不良率</td></tr>
+        <tr><td class="wrap">③ 转债到期兑付（2027.12）</td><td class="risk-mid">中</td><td class="wrap">413.5 亿到期偿付 + 错失资本补充 → 核心一级充足率约束扩表与分红提升</td><td class="wrap">跟踪：转股进度、是否下修转股价、资本补充工具发行</td></tr>
+        <tr><td class="wrap">④ 非息收入波动（债市）</td><td class="risk-mid">中</td><td class="wrap">其他非息以债券投资收益为主，利率上行年份将直接拖累营收</td><td class="wrap">缓释：手续费收入恢复增长（2026Q1 +7.45%）对冲</td></tr>
+        <tr><td class="wrap">⑤ 房地产与地方化债长尾风险</td><td class="risk-mid">中</td><td class="wrap">存量敞口的拨备消耗超预期；化债压低资产收益率</td><td class="wrap">缓释：风险已连续三年收敛，敞口透明度提升</td></tr>
+        <tr><td class="wrap">⑥ 市场情绪与机构评级</td><td class="risk-low">低</td><td class="wrap">2026 年 5 月已出现券商下调评级与负面深度报道，板块分化下资金流出低动量个股</td><td class="wrap">缓释：高股息的绝对收益资金承接；估值已处历史底部</td></tr>
+      </table></div>
+    </div>
+
+    <h3 style="border-left:none;padding-left:0">SWOT 总览</h3>
+    <div class="grid2">
+      <div class="swot s"><h3>优势 S</h3><ul>
+        <li>11.3 万亿资产规模，股份行第二，系统重要性银行</li>
+        <li>绿色金融（首家赤道银行）、投行（债券承销头部）差异化标签</li>
+        <li>不良率 1.08% 五年稳定，拨备 228% 仍厚实</li>
+        <li>分红率连续 16 年提升，股息率约 6.1% 居板块前列</li></ul></div>
+      <div class="swot w"><h3>劣势 W</h3><ul>
+        <li>负债成本高于零售型银行，息差下行期受伤更深</li>
+        <li>营收三年零增长，利润靠拨备反哺，成长性缺失</li>
+        <li>零售/财富管理客群基础与招行差距明显</li>
+        <li>413.5 亿转债悬置，资本补充路径不确定</li></ul></div>
+      <div class="swot o"><h3>机会 O</h3><ul>
+        <li>存款重定价红利释放，息差有望 2026–2027 磨底企稳</li>
+        <li>转债转股诉求驱动的分红提升与市值管理</li>
+        <li>险资/指数资金持续增配高股息，板块 beta 仍在</li>
+        <li>手续费收入修复（财富管理回暖 + 投行业务）</li></ul></div>
+      <div class="swot t"><h3>威胁 T</h3><ul>
+        <li>降息周期未结束，息差底部时点一再后移</li>
+        <li>零售信用风险的行业性抬升</li>
+        <li>2026 年板块行情分化，弱基本面个股被边缘化</li>
+        <li>金融让利政策对银行利润的长期约束</li></ul></div>
+    </div>
+  </section>
+
+  <!-- ============ 十一、投资结论 ============ -->
+  <section id="s11">
+    <h2>十一、投资结论</h2>
+    <div class="card">
+      <h3 style="margin-top:0">核心判断：买的是股息与估值修复的「双保险」，不是成长</h3>
+      <p>兴业银行是当前 A 股银行板块中「便宜 + 高息 + 有催化」组合较为完整的标的之一：0.45 倍 PB 与 6.1% 股息率提供了厚实的安全边际和持有回报下限；转债转股诉求构成管理层维护市值的现实动机；拨备与资本的「余粮」保证了分红在利润磨底期的可持续性。它的问题同样清晰——息差没见底、营收不增长，基本面拐点尚未出现，因此短期股价缺乏向上的自发动力，2026 年以来跑输板块即是证明。</p>
+      <p><b>投资评级倾向：股息型资金「增持」，交易型资金「中性」。</b>概率加权目标价约 19.4 元，12–18 个月含股息期望总回报约 +17%，悲观情景下总回报约为零——赔率结构是典型的「输时间不输钱」。适合以持有收息为底仓逻辑、把估值修复当作期权的中长期资金；不适合追求景气与动量的投资者。若必须在股份行中二选一：要确定性选招行，要赔率与股息选兴业。</p>
+      <h3>关键跟踪清单</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th class="wrap">跟踪项</th><th class="wrap">看多确认信号</th><th class="wrap">看空确认信号</th></tr>
+        <tr><td class="wrap">净息差（中报/季报）</td><td class="wrap">环比降幅收窄至 2–3bp 内，管理层确认企稳</td><td class="wrap">单季降幅再度走阔至 5bp 以上</td></tr>
+        <tr><td class="wrap">营收增速</td><td class="wrap">2026 全年转正（利息净收入正增长兑现）</td><td class="wrap">连续两个季度负增长扩大</td></tr>
+        <tr><td class="wrap">资产质量</td><td class="wrap">不良生成率下行，拨备覆盖率止跌</td><td class="wrap">零售不良抬头 + 拨备加速消耗</td></tr>
+        <tr><td class="wrap">兴业转债</td><td class="wrap">转股明显放量 / 下修转股价 / 股价站稳 20.63 元上方</td><td class="wrap">临近 2027 年到期仍无转股进展</td></tr>
+        <tr><td class="wrap">分红政策</td><td class="wrap">2026 年度分红率升至 32% 以上</td><td class="wrap">分红率停滞或下调</td></tr>
+      </table></div>
+      <div class="callout" style="margin-top:16px"><b>一句话总结：</b>这是一家以 0.45 倍净资产出售、每年返还你 6% 现金的全国性银行——市场用极低的价格补偿你陪它等待息差见底；只要资产质量不出意外，时间站在持有者这边，而 20.63 元的转股价是管理层与你利益绑定的刻度线。</div>
+    </div>
+  </section>
+
+  <div class="disclaimer">
+    <b>数据来源与免责声明：</b>本报告基于公开信息整理，主要来源包括：
+    <a href="https://download.cib.com.cn/netbank/download/cn/announcements/20260326_2.pdf">兴业银行 2025 年年度报告摘要</a>、
+    <a href="https://download.cib.com.cn/netbank/download/cn/announcements/20260330.pdf">2025 年度业绩说明会实录</a>、
+    <a href="https://finance.sina.com.cn/jjxw/2026-04-29/doc-inhwenau7923484.shtml">新浪财经 2026 年一季报报道</a>、
+    <a href="https://pdf.dfcfw.com/pdf/H3_AP202603271820802524_1.pdf">国信证券 2025 年报点评</a>、
+    <a href="https://www.yicai.com/news/102889902.html">第一财经三季报解读</a>、
+    <a href="https://www.jisilu.cn/data/convert_bond_detail/113052">集思录·兴业转债数据</a>、
+    <a href="https://finance.sina.com.cn/roll/2026-04-02/doc-inhtarai9533270.shtml">转债转股进展公告报道</a>、
+    <a href="https://m.21jingji.com/article/20260122/herald/1b174dadc40eb5b9ab699d9677e18f72.html">21 财经银行年度盘点</a>、
+    <a href="http://www.news.cn/money/20260403/8442907475254e9abfd4acb96ed045d3/c.html">新华网上市银行分红报道</a> 等，行情数据截至 2026 年 6 月上旬（股价以 5 月下旬约 17.3–17.8 元区间、按 17.4 元为测算基准；今日 6 月 12 日为末期股息除权除息日，除息后价格将相应调整）。
+    文中 ROE、PB、情景目标价等为基于公开披露的推算值，已在正文标注「约 / 测算」。本报告仅供学习与研究参考，<b>不构成任何投资建议</b>。股市有风险，投资需谨慎。
+  </div>
+
+  <footer>兴业银行（601166.SH）深度研究 · 静态页面 · 生成于 2026-06-12 · <a href="index.html" style="color:var(--blue)">查看泡泡玛特（09992.HK）报告</a></footer>
+</div>
+
+<script>
+  const bars = document.querySelectorAll('.bar-fill');
+  bars.forEach(b => { b.dataset.w = b.style.width; b.style.width = '0'; b.style.transition = 'width 1s ease-out'; });
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.width = e.target.dataset.w; io.unobserve(e.target); }
+    });
+  }, { threshold: 0.3 });
+  bars.forEach(b => io.observe(b));
+</script>
+</body>
+</html>
